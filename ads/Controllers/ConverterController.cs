@@ -1,7 +1,10 @@
 ﻿// Controller: Converter
 
+using ads.Lib;
 using ads.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Reflection;
 
 namespace ads.Controllers;
 
@@ -12,6 +15,12 @@ public class ConverterController : Controller
     [HttpGet]
     public ActionResult Index()
     {
+
+      
+        // Repopulate the options
+      
+
+        //model.Options = new List<string> { "Option 1", "Option 2", "Option 3" };
         return View();
     }
 
@@ -23,9 +32,17 @@ public class ConverterController : Controller
         var meters = _lengthConverter.ConvertToMeters(value, fromUnit);
 
 
-        string[] AllUnit = { "กิโลเมตร", "เมตร", "เซนติเมตร", "มิลลิเมตร" };
+        //var AllUnit = ConverterModel.Options;
 
-        foreach (var _Unit in AllUnit)
+
+        //var AllUnit = ConverterModel.Options
+        //    .OrderByDescending(s => s.StartsWith(toUnit))
+        //    .ThenBy(s => s);
+
+
+
+
+        foreach (var _Unit in ConverterModel.Options)
         {
             var result = _lengthConverter.ConvertFromMeters(meters, _Unit);
 

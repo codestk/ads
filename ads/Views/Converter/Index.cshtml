@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "การแปลงหน่วย";
+    
+}
+
+ 
+<div class="container">
+    <h1>การแปลงหน่วย</h1>
+    @using (Html.BeginForm("Convert", "Converter", FormMethod.Post))
+    {
+        <div class="mb-3">
+            <label for="value" class="form-label">ค่า:</label>
+            <input type="number" class="form-control" id="value" name="value" required />
+        </div>
+        <div class="mb-3">
+            <label for="fromUnit" class="form-label">จากหน่วย:</label>
+            <select class="form-select" id="fromUnit" name="fromUnit">
+                <option value="เมตร">เมตร</option>
+                <option value="กิโลเมตร">กิโลเมตร</option>
+                <option value="เซนติเมตร">เซนติเมตร</option>
+                <option value="มิลลิเมตร">มิลลิเมตร</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="toUnit" class="form-label">ไปยังหน่วย:</label>
+            <select class="form-select" id="toUnit" name="toUnit">
+                <option value="เมตร">เมตร</option>
+                <option value="กิโลเมตร">กิโลเมตร</option>
+                <option value="เซนติเมตร">เซนติเมตร</option>
+                <option value="มิลลิเมตร">มิลลิเมตร</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">แปลง</button>
+    }
+
+    @if (ViewBag.Result != null)
+    {
+        <div class="alert alert-success mt-3" role="alert">
+            @Html.Raw(ViewBag.Result)
+        </div>
+    }
+</div>

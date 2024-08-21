@@ -23,9 +23,6 @@ public class ConverterController : Controller
         var meters = _lengthConverter.ConvertToMeters(value, fromUnit);
 
 
- 
-
-
         string[] AllUnit = { "กิโลเมตร", "เมตร", "เซนติเมตร", "มิลลิเมตร" };
 
         foreach (var _Unit in AllUnit)
@@ -34,16 +31,16 @@ public class ConverterController : Controller
 
             if (toUnit == _Unit)
             {
-
                 _result += $"<p class=\"alert alert-light\">{value} {fromUnit} = {result} {_Unit}</p>";
+            }
+            else if (fromUnit == _Unit)
+            {
+                //skip
             }
             else
             {
                 _result += $"<p>{value} {fromUnit} = {result} {_Unit} </p>";
             }
-        
-
-          
         }
 
 

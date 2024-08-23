@@ -13,21 +13,18 @@ public class ConverterController : Controller
     private readonly LengthConverter _lengthConverter = new();
 
     [HttpGet]
-    public ActionResult Index()
+    public ActionResult Index(ConverterModel model)
     {
 
-      
-        // Repopulate the options
-      
 
-        //model.Options = new List<string> { "Option 1", "Option 2", "Option 3" };
-        return View();
+
+        return View(model);
     }
 
     [HttpPost]
     public ActionResult Convert(double value, string fromUnit, string toUnit)
     {
-        var _result = "";
+         
 
         var meters = _lengthConverter.ConvertToMeters(value, fromUnit);
 
@@ -41,29 +38,43 @@ public class ConverterController : Controller
 
 
 
-
-        foreach (var _Unit in ConverterModel.Options)
+       List<ConverterModel> ls=new List<ConverterModel>();
+        foreach (var _toUnit in ConverterModel.Options)
         {
-            var result = _lengthConverter.ConvertFromMeters(meters, _Unit);
+            var result = _lengthConverter.ConvertFromMeters(meters, _toUnit);
 
-            if (toUnit == _Unit)
-            {
-                _result += $"<p class=\"alert alert-light\">{value} {fromUnit} = {result} {_Unit}</p>";
-            }
-            else if (fromUnit == _Unit)
-            {
-                //skip
-            }
-            else
-            {
-                _result += $"<p>{value} {fromUnit} = {result} {_Unit} </p>";
-            }
+            ConverterModel mt = new ConverterModel();
+            mt.Centimeter = meters;
+            mt.fromUnit = fromUnit;
+            mt.toUnit = _toUnit;
+            mt.Result = result.ToString("#,##0.000");
+            ls.Add(mt);
+
+
+            //if (toUnit == _toUnit)
+            //{
+            //    _result += $"<p class=\"alert alert-light\">{value} {fromUnit} = {mt.Result} {_toUnit}</p>";
+            //}
+            //else if (fromUnit == _toUnit)
+            //{
+            //    //skip
+            //}
+            //else
+            //{
+            //    _result += $"<p>{value} {fromUnit} = {mt.Result} {_toUnit} </p>";
+            //}
         }
 
+          
+        ViewBag.AllResult = ls;
 
-        ViewBag.Result = _result;
-        //ViewBag.Result = $"{value} {fromUnit} = {result} {toUnit}";
+        ViewBag.InputValue = value; // เก็บค่าที่กรอกไว้ใน ViewBag
+        ViewBag.fromUnit = fromUnit;
+        ViewBag.toUnit = toUnit;
+       
 
-        return View("Index");
+        return View("index");
+
+        //return RedirectToAction("Index");
     }
 }

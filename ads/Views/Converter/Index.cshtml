@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿ 
 @model ads.Models.ConverterModel  
 
 
@@ -8,27 +8,44 @@
 }
 
  
-<div class="container">
+<section class="mb-4">
+   
     <h1>การแปลงหน่วย</h1>
     
     @using (Html.BeginForm("Convert", "Converter", FormMethod.Post))
     {
+     
+
         <div class="mb-3">
             <label for="value" class="form-label">ค่า:</label>
-            <input type="number" class="form-control" id="value" name="value" required />
+            <input type="number" class="form-control" id="value" name="value" value="@ViewBag.InputValue" required />
         </div>
         <div class="mb-3">
             <label for="fromUnit" class="form-label">จากหน่วย:</label>
-            <select class="form-select" id="fromUnit" name="fromUnit">
-                @foreach (var option in ConverterModel.Options)
+            @{
+                string selectedValue = ViewBag.fromUnit;
+        }
+            <select class="form-select" id="fromUnit" name="fromUnit" asp-for="@selectedValue">
+              
+               @foreach (var optionV in ConverterModel.Options)
                 {
-                    <option value="@option">@option</option>
-                }
+
+
+                    <option value="@optionV">@optionV</option>
+
+
+                } 
+
+           
+ 
             </select>
         </div>
         <div class="mb-3">
+            @{
+                selectedValue = ViewBag.toUnit;
+            }
             <label for="toUnit" class="form-label">ไปยังหน่วย:</label>
-            <select class="form-select" id="toUnit" name="toUnit">
+            <select class="form-select" id="toUnit" name="toUnit" asp-for="@selectedValue">
                 @foreach (var option in ConverterModel.Options)
                 {
                     <option value="@option">@option</option>
@@ -40,10 +57,46 @@
         <button type="submit" class="btn btn-primary">แปลง</button>
     }
 
-    @if (ViewBag.Result != null)
+    </section>
+
+
+@if (ViewBag.AllResult != null)
     {
-        <div class="alert alert-success mt-3" role="alert">
-            @Html.Raw(ViewBag.Result)
-        </div>
+@*     <div>
+            <h2>ผลลัพธ์</h2>
+            <div class="alert alert-success mt-3" role="alert">
+                @Html.Raw(ViewBag.Result)
+            </div>
+
+        </div>*@
+    <section>
+
+        <h2>ผลลัพธ์</h2>
+        <div class="alert   mt-3" style="border-radius: 25px;" role="alert">
+        @foreach (var item in ViewBag.AllResult)
+        {
+
+                var rowResult = item.Centimeter.ToString("#,##0.000") + " "+ item.fromUnit + " = " + item.Result +" "+ item.toUnit;
+                if (item.toUnit == ViewBag.toUnit)
+                {
+
+                    <p class="text-focus " role="alert">
+                        @rowResult
+                    </p>
+                }
+                else
+                {
+                    <p class=" " role="alert">
+                        @rowResult
+                       
+                    </p>
+                }
+    
+        }
+            </div>
+
+    </section>
     }
-</div>
+
+
+
